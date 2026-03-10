@@ -91,7 +91,7 @@ const PlanResults = () => {
       { name: "Partnerships", data: plan.partnerships },
     ];
     categories.forEach(({ name, data }) => {
-      const cat = data as CategoryData | null;
+      const cat = data as unknown as CategoryData | null;
       if (cat) {
         sections.push(`## ${name}`);
         sections.push(`**Ideas:** ${cat.ideas?.join(", ") || "N/A"}`);
