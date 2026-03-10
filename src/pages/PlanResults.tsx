@@ -9,8 +9,6 @@ import { ArrowLeft, Copy, RefreshCw, Sparkles, Image as ImageIcon, ListChecks, L
 import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 import jsPDF from "jspdf";
-import { useToast } from "@/hooks/use-toast";
-import type { Tables } from "@/integrations/supabase/types";
 
 type Plan = Tables<"marketing_plans">;
 
