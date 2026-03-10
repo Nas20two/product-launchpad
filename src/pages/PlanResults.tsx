@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Copy, RefreshCw, Sparkles, Image as ImageIcon, ListChecks, Lightbulb } from "lucide-react";
+import { ArrowLeft, Copy, RefreshCw, Sparkles, Image as ImageIcon, ListChecks, Lightbulb, FileDown } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import type { Tables } from "@/integrations/supabase/types";
+import jsPDF from "jspdf";
 import { useToast } from "@/hooks/use-toast";
 import type { Tables } from "@/integrations/supabase/types";
 
