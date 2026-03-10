@@ -84,34 +84,90 @@ const PlanResults = () => {
 
   const copyToClipboard = () => {
     if (!plan) return;
-    const sections = [
-      `# Marketing Plan: ${plan.product_name}`,
-      `**Value Proposition:** ${plan.value_proposition}\n`,
+    const text = buildPlanText(plan);
+    navigator.clipboard.writeText(text);
+    toast({ title: "Copied to clipboard!" });
+  };
+
+  const buildPlanText = (p: Plan) => {
+    const sections = [`Marketing Plan: ${p.product_name}`, `Value Proposition: ${p.value_proposition}`, ""];
+    const cats = [
+      { name: "Content Marketing", data: p.content_marketing },
+      { name: "Social Media", data: p.social_media },
+      { name: "Partnerships", data: p.partnerships },
     ];
-    const categories = [
+    cats.forEach(({ name, data }) => {
+      const cat = data as unknown as CategoryData | null;
+      if (cat) {
+        sections.push(name);
+        sections.push(`Ideas: ${cat.ideas?.join(", ") || "N/A"}`);
+        if (cat.topPick) {
+          sections.push(`Top Pick: ${cat.topPick.idea}`);
+          sections.push(`Pros: ${cat.topPick.pros?.join(", ")}`);
+          sections.push(`Cons: ${cat.topPick.cons?.join(", ")}`);
+        }
+        sections.push("");
+      }
+    });
+    const steps = p.next_steps as string[] | null;
+    if (steps) {
+      sections.push("Next Steps");
+      steps.forEach((s, i) => sections.push(`${i + 1}. ${s}`));
+    }
+    return sections.join("\n");
+  };
+
+  const exportPdf = () => {
+    if (!plan) return;
+    const doc = new jsPDF();
+    const margin = 20;
+    const pageWidth = doc.internal.pageSize.getWidth() - margin * 2;
+    let y = margin;
+
+    const addText = (text: string, size: number, bold = false) => {
+      doc.setFontSize(size);
+      doc.setFont("helvetica", bold ? "bold" : "normal");
+      const lines = doc.splitTextToSize(text, pageWidth);
+      for (const line of lines) {
+        if (y > 270) { doc.addPage(); y = margin; }
+        doc.text(line, margin, y);
+        y += size * 0.5;
+      }
+      y += 4;
+    };
+
+    addText(`Marketing Plan: ${plan.product_name}`, 18, true);
+    addText(plan.value_proposition, 11);
+    y += 4;
+
+    const cats = [
       { name: "Content Marketing", data: plan.content_marketing },
       { name: "Social Media", data: plan.social_media },
       { name: "Partnerships", data: plan.partnerships },
     ];
-    categories.forEach(({ name, data }) => {
+
+    cats.forEach(({ name, data }) => {
       const cat = data as unknown as CategoryData | null;
-      if (cat) {
-        sections.push(`## ${name}`);
-        sections.push(`**Ideas:** ${cat.ideas?.join(", ") || "N/A"}`);
-        if (cat.topPick) {
-          sections.push(`**Top Pick:** ${cat.topPick.idea}`);
-          sections.push(`Pros: ${cat.topPick.pros?.join(", ")}`);
-          sections.push(`Cons: ${cat.topPick.cons?.join(", ")}\n`);
-        }
+      if (!cat) return;
+      addText(name, 14, true);
+      cat.ideas?.forEach((idea, i) => addText(`${i + 1}. ${idea}`, 10));
+      if (cat.topPick) {
+        y += 2;
+        addText(`Top Pick: ${cat.topPick.idea}`, 11, true);
+        cat.topPick.pros?.forEach((p) => addText(`  ✓ ${p}`, 10));
+        cat.topPick.cons?.forEach((c) => addText(`  ✗ ${c}`, 10));
       }
+      y += 4;
     });
+
     const steps = plan.next_steps as string[] | null;
-    if (steps) {
-      sections.push("## Next Steps");
-      steps.forEach((s, i) => sections.push(`${i + 1}. ${s}`));
+    if (steps?.length) {
+      addText("Next Steps", 14, true);
+      steps.forEach((s, i) => addText(`${i + 1}. ${s}`, 10));
     }
-    navigator.clipboard.writeText(sections.join("\n"));
-    toast({ title: "Copied to clipboard!" });
+
+    doc.save(`${plan.product_name.replace(/\s+/g, "-")}-marketing-plan.pdf`);
+    toast({ title: "PDF downloaded!" });
   };
 
   if (loading) {
