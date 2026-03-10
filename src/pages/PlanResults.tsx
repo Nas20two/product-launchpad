@@ -123,9 +123,9 @@ const PlanResults = () => {
 
   const isGenerating = plan.status === "generating";
   const categories = [
-    { key: "content", label: "Content Marketing", icon: Lightbulb, data: plan.content_marketing as CategoryData | null },
-    { key: "social", label: "Social Media", icon: Sparkles, data: plan.social_media as CategoryData | null },
-    { key: "partnerships", label: "Partnerships", icon: ListChecks, data: plan.partnerships as CategoryData | null },
+    { key: "content", label: "Content Marketing", icon: Lightbulb, data: plan.content_marketing as unknown as CategoryData | null },
+    { key: "social", label: "Social Media", icon: Sparkles, data: plan.social_media as unknown as CategoryData | null },
+    { key: "partnerships", label: "Partnerships", icon: ListChecks, data: plan.partnerships as unknown as CategoryData | null },
   ];
   const nextSteps = plan.next_steps as string[] | null;
   const visionUrls = plan.vision_board_urls || [];
