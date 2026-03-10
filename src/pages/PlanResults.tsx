@@ -202,9 +202,14 @@ const PlanResults = () => {
               <p className="text-sm text-muted-foreground">{plan.value_proposition}</p>
             </div>
           </div>
-          <Button variant="outline" size="sm" className="gap-2" onClick={copyToClipboard}>
-            <Copy className="h-3.5 w-3.5" /> Export
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="gap-2" onClick={copyToClipboard}>
+              <Copy className="h-3.5 w-3.5" /> Copy
+            </Button>
+            <Button variant="outline" size="sm" className="gap-2" onClick={exportPdf}>
+              <FileDown className="h-3.5 w-3.5" /> PDF
+            </Button>
+          </div>
         </div>
       </header>
 

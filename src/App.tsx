@@ -6,6 +6,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, ProtectedRoute } from "@/hooks/useAuth";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import NewPlan from "./pages/NewPlan";
 import PlanResults from "./pages/PlanResults";
@@ -23,6 +25,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/new-plan" element={<ProtectedRoute><NewPlan /></ProtectedRoute>} />
             <Route path="/plan/:id" element={<ProtectedRoute><PlanResults /></ProtectedRoute>} />
