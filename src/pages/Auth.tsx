@@ -125,6 +125,15 @@ const Auth = () => {
               >
                 {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
               </button>
+              {isLogin && (
+                <button
+                  type="button"
+                  onClick={() => navigate("/forgot-password")}
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Forgot your password?
+                </button>
+              )}
             </CardFooter>
           </form>
         </Card>
